@@ -19,10 +19,6 @@ export class CreateProjectDto {
 
   @IsString()
   @IsOptional()
-  coverImage?: string;
-
-  @IsString()
-  @IsOptional()
   repoLink?: string;
 
   @IsString()

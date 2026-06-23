@@ -60,8 +60,36 @@ export class ProjectController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
-    return this.projectService.update(id, updateProjectDto);
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'coverImageFile', maxCount: 1 },
+      { name: 'imageFiles', maxCount: 10 },
+      { name: 'technologyIconFiles', maxCount: 10 },
+    ]),
+  )
+  async update(
+    @Param('id') id: string,
+    @Body() updateProjectDto: UpdateProjectDto,
+    @UploadedFiles()
+    files: {
+      coverImageFile?: any[];
+      imageFiles?: any[];
+      technologyIconFiles?: any[];
+    },
+  ) {
+    const updatedProject = await this.projectService.update(
+      id,
+      updateProjectDto,
+      files?.coverImageFile?.[0],
+      files?.imageFiles,
+      files?.technologyIconFiles,
+    );
+
+    return {
+      status: 'SUCCESS',
+      message: 'Project updated successfully',
+      data: updatedProject,
+    };
   }
 
   @Delete(':id')

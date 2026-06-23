@@ -57,21 +57,32 @@ erDiagram
 
 ## 📡 REST API Specifications & Endpoint Matrix
 
-### 1. Administrative Authentication (/auth)
+### 1. Root & Utility Base (`/`)
 
-...
+| Method | Endpoint  | Access | Description                                   |
+| :----- | :-------- | :----- | :-------------------------------------------- |
+| `GET`  | `/`       | Public | Application root welcome status check         |
+| `GET`  | `/health` | Public | System health checks for service availability |
 
-### 2. Portfolio Project Management (/projects)
+### 2. User Management (`/user`)
 
-...
+| Method   | Endpoint    | Access | Description                                                    |
+| :------- | :---------- | :----- | :------------------------------------------------------------- |
+| `POST`   | `/user`     | Public | Register/create a new administrative or member user account    |
+| `GET`    | `/user`     | Public | Retrieve a complete list of registered users                   |
+| `GET`    | `/user/:id` | Public | Fetch unique profiling and identifier data for a specific user |
+| `PATCH`  | `/user/:id` | Public | Modify specific user profile parameters securely               |
+| `DELETE` | `/user/:id` | Public | Terminate and erase a user account record permanently          |
 
-### 3. Code Snippet Catalog (/snippets)
+### 3. Portfolio Project Management (`/project`)
 
-...
-
-### 4. Dynamic Content & Social Links (/social-links)
-
-...
+| Method   | Endpoint       | Access | Description                                                               |
+| :------- | :------------- | :----- | :------------------------------------------------------------------------ |
+| `POST`   | `/project`     | Public | Create a new portfolio project mapping with multi-file binary uploads     |
+| `GET`    | `/project`     | Public | Retrieve all recorded portfolio projects along with relational nodes      |
+| `GET`    | `/project/:id` | Public | Fetch comprehensive details of a specific project by identity key         |
+| `PATCH`  | `/project/:id` | Public | Execute strict relational sync update (Stay, Add, or Delete media assets) |
+| `DELETE` | `/project/:id` | Public | Permanently remove a project card and cascade erase associated images     |
 
 ---
 
@@ -81,18 +92,39 @@ The NestJS application’s internal modular layout follows structural encapsulat
 
 ```plaintext
 src/
-├── auth/           # Auth controllers, JWT strategies, and Passport guards
+├── common/         # Global custom exceptions, guards, and dynamic filters
+│   └── filters/    # UniversalExceptionFilter for processing strict validation formats
+├── project/        # Portfolio projects handling engine and relational operations
+├── storage/        # Cloudinary binary stream storage service orchestration
 ├── user/           # User management and profile handling engine
-├── snippets/       # Snippet business logic, validations, and DTO layouts
-├── projects/       # Portfolio projects handling engine and storage references
-├── social-links/   # Dynamic landing external links orchestrator
-├── prisma/         # Centralized Prisma Module instantiation and service definitions
-├── main.ts         # Core application bootstrap file and Global Pipes configuration
-└── app.module.ts   # Root container importing and wiring all core modules together
+├── main.ts         # Core application bootstrap file, global pipes, and filters config
+├── app.module.ts   # Root container importing and wiring all core modules together
+└── prisma.service.ts # Centralized Prisma Service database instance provider
 ```
 
 ---
 
 ## 🛠️ Local Integration & Scripts
 
-...
+### 1. Automated Lifecycle Scripts
+
+The backend engine leverages NPM lifecycle hooks to automate internal configurations. Core developmental operational commands available:
+
+- **`npm install`** : Installs all required dependencies and automatically triggers `npx prisma generate` via the postinstall hook.
+- **`npm run start:dev`** : Launches the local NestJS server with hot-reload enabled (watches file changes).
+- **`npm run build`** : Compiles the TypeScript source code into a production-ready `/dist` directory.
+- **`npm run start:prod`** : Executes the pre-compiled production build.
+
+### 2. Environment Variables Configuration (`.env`)
+
+Create a `.env` file inside the root of this `/backend` directory and populate it with the required integration parameters below (replace with your actual credentials):
+
+```env
+# Central PostgreSQL Database Connection (Prisma Infrastructure Data Node)
+DATABASE_URL="postgresql://username:password@localhost:5432/database_name?sslmode=verify-full"
+
+# Cloudinary Binary Stream Media Storage Integration
+CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+```
