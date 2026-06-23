@@ -3,10 +3,11 @@ import {
   ConflictException,
   NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma.service';
-import { CreateProjectDto } from './dto/create-project.dto';
-import { UpdateProjectDto } from './dto/update-project.dto';
 import { CloudinaryService } from 'src/storage/cloudinary.service';
+
+import { CreateProjectDto } from './dto/create-project.dto';
+import { PrismaService } from '../prisma.service';
+import { UpdateProjectDto } from './dto/update-project.dto';
 
 @Injectable()
 export class ProjectService {
@@ -52,7 +53,7 @@ export class ProjectService {
         }
       }
 
-      let techQueries: any[] = [];
+      const techQueries: any[] = [];
       const rawTechName = dto.technologyNames;
 
       if (rawTechName) {
@@ -202,7 +203,7 @@ export class ProjectService {
         }
       }
 
-      let techQueries: any[] = [];
+      const techQueries: any[] = [];
       let shouldUpdateTechnologies = false;
 
       if (dto.technologyNames) {
