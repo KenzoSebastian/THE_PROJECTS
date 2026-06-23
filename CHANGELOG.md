@@ -6,10 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ---
 
-## [Unreleased]
+## [0.4.0] - 2026-06-23
 
 ### ✨ Added
-- **Project Modification Engine Plan:** Relational data patching (PATCH) to support updating project information alongside smart management for replacing or updating existing Cloudinary assets.
+- **Dynamic Relational Patch Engine (PATCH):** Implemented an enterprise-grade update module capable of processing granular textual modifications and relational media synchronization.
+- **Stay, Remove, and Add Multi-Asset Logic:** Integrated state-tracking array payload (`retainedImageIds`) inside the `UpdateProjectDto` to selectively persist gallery assets, delete removed assets directly from Cloudinary storage, and concurrent-upload new file streams.
+- **Strict-Gate Request Validation Infrastructure:** Configured global request interception using explicit DTO stripping (`whitelist: true`) combined with rejection rules (`forbidNonWhitelisted: true`) to immediately decline payloads containing typos or unregistered dynamic parameters prior to hitting internal services or database layers.
 
 ---
 
