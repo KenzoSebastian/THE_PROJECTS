@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { PrismaService } from '../prisma.service';
 
+import { CloudinaryService } from '../storage/cloudinary.service';
+import { PrismaService } from '../prisma.service';
 import { ProjectController } from './project.controller';
 import { ProjectService } from './project.service';
-import { CloudinaryService } from 'src/storage/cloudinary.service';
 
 @Module({
   controllers: [ProjectController],

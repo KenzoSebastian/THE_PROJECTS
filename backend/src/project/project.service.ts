@@ -1,12 +1,11 @@
 import {
-  Injectable,
   ConflictException,
+  Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CloudinaryService } from 'src/storage/cloudinary.service';
-
-import { CreateProjectDto } from './dto/create-project.dto';
+import { CloudinaryService } from '../storage/cloudinary.service';
 import { PrismaService } from '../prisma.service';
+import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 
 @Injectable()
