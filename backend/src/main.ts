@@ -1,3 +1,11 @@
+import { register } from 'tsconfig-paths';
+import * as tsConfig from '../tsconfig.json';
+
+register({
+  baseUrl: tsConfig.compilerOptions.baseUrl || './',
+  paths: (tsConfig.compilerOptions as any).paths || {},
+});
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { UniversalExceptionFilter } from './common/filters/universal-exception.filter';
