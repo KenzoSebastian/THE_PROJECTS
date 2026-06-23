@@ -9,16 +9,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 ## [Unreleased]
 
 ### ✨ Added
-- *[Contoh: Added JWT Authentication guards in backend module]*
-- 
+- **Authentication Engine Plan:** Dedicated administrative authentication system using dynamic JWT guards.
+- **Direct Object Storage Upload Integration:** Feature to handle media, project images, and asset uploads directly to Object Storage from the HTTP request body payload.
 
-### 🔄 Changed
-- *[Contoh: Updated Prisma schema to support many-to-many relationship]*
-- 
+---
 
-### 🐛 Fixed
-- *[Contoh: Fixed CORS origin blocking on dashboard application]*
--
+## [0.2.0] - 2026-06-23
+
+### ✨ Added
+- **Prisma ORM Ecosystem Setup:** Configured Prisma Client and initialized database access definitions targeting the cloud PostgreSQL layer.
+- **Relational Project Schema:** Established core schema definitions featuring a 1-to-many cascading relationship model mapping `Project` data to `Image` gallery URLs and `Technology` badges.
+- **Robust Project CRUD Module:** Implemented comprehensive relational CRUD services inside the NestJS engine equipped with request body validations (DTOs) and standardized `{ status, message, data }` response wrappers.
 
 ---
 
