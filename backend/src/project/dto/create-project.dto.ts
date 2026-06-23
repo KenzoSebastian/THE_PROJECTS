@@ -1,29 +1,4 @@
-import {
-  IsString,
-  IsNotEmpty,
-  IsOptional,
-  IsBoolean,
-  IsArray,
-  IsUrl,
-  ValidateNested,
-} from 'class-validator';
-import { Type } from 'class-transformer';
-
-class CreateImageDto {
-  @IsUrl()
-  @IsNotEmpty()
-  url!: string;
-}
-
-class CreateTechnologyDto {
-  @IsString()
-  @IsNotEmpty()
-  name!: string;
-
-  @IsUrl()
-  @IsOptional()
-  icon?: string;
-}
+import { IsString, IsNotEmpty, IsOptional, IsBoolean } from 'class-validator';
 
 export class CreateProjectDto {
   @IsString()
@@ -42,15 +17,15 @@ export class CreateProjectDto {
   @IsNotEmpty()
   content!: string;
 
-  @IsUrl()
-  @IsNotEmpty()
-  coverImage!: string;
+  @IsString()
+  @IsOptional()
+  coverImage?: string;
 
-  @IsUrl()
+  @IsString()
   @IsOptional()
   repoLink?: string;
 
-  @IsUrl()
+  @IsString()
   @IsOptional()
   demoLink?: string;
 
@@ -58,15 +33,6 @@ export class CreateProjectDto {
   @IsOptional()
   isPublished?: boolean;
 
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => CreateImageDto)
-  @IsOptional()
-  images?: CreateImageDto[];
-
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => CreateTechnologyDto)
-  @IsOptional()
-  technologies?: CreateTechnologyDto[];
+  @IsString()
+  technologyNames!: string;
 }

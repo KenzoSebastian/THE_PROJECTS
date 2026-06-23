@@ -9,8 +9,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 ## [Unreleased]
 
 ### ✨ Added
-- **Authentication Engine Plan:** Dedicated administrative authentication system using dynamic JWT guards.
-- **Direct Object Storage Upload Integration:** Feature to handle media, project images, and asset uploads directly to Object Storage from the HTTP request body payload.
+- **Project Modification Engine Plan:** Relational data patching (PATCH) to support updating project information alongside smart management for replacing or updating existing Cloudinary assets.
+
+---
+
+## [0.3.0] - 2026-06-23
+
+### ✨ Added
+- **Cloudinary Storage Service Integration:** Implemented `CloudinaryService` to stream binary data directly from NestJS interceptors into Cloudinary folders (`the_projects/`).
+- **Multipart Form-Data Request Pipeline:** Reconfigured `CreateProjectDto` and `ProjectController` using `FileFieldsInterceptor` to process mixed-content text payloads and parallel multiple file uploads (`coverImageFile`, `imageFiles`, `technologyIconFiles`).
+- **Many-to-Many Skill Relational Architecture:** Migrated Prisma schema to support an implicit Many-to-Many connection between `Project` and `Technology` tables with a strict `@unique` name constraint to prevent duplication.
+- **Fault-Tolerant Asset Rollback System:** Implemented an automated asset cleanup mechanism that instantly deletes successfully uploaded Cloudinary files if a Prisma database validation or transaction exception occurs during project creation.
 
 ---
 

@@ -6,32 +6,124 @@ import {
 import { PrismaService } from 'src/prisma.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
+import { CloudinaryService } from 'src/storage/cloudinary.service';
 
 @Injectable()
 export class ProjectService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly cloudinaryService: CloudinaryService,
+  ) {}
 
-  async create(createProjectDto: CreateProjectDto) {
-    const { images, technologies, ...projectData } = createProjectDto;
+  async create(
+    dto: CreateProjectDto,
+    coverFile?: any,
+    imageFiles?: Record<string, any>[],
+    techIconFiles?: any[],
+  ) {
+    const uploadedUrls: string[] = [];
 
-    const existingProject = await this.prisma.project.findUnique({
-      where: { slug: projectData.slug },
-    });
-    if (existingProject) {
-      throw new ConflictException('Slug already exists! Use a unique slug.');
+    try {
+      const existingProject = await this.prisma.project.findUnique({
+        where: { slug: dto.slug },
+      });
+      if (existingProject) {
+        throw new ConflictException('Slug already exists!');
+      }
+
+      let coverImageUrl = '';
+      if (coverFile) {
+        coverImageUrl = await this.cloudinaryService.uploadFile(
+          coverFile,
+          'the_projects/covers',
+        );
+        uploadedUrls.push(coverImageUrl);
+      }
+
+      const uploadedImages: { url: string }[] = [];
+      if (imageFiles && imageFiles.length > 0) {
+        for (const file of imageFiles) {
+          const url = await this.cloudinaryService.uploadFile(
+            file,
+            'the_projects/gallery',
+          );
+          uploadedUrls.push(url);
+          uploadedImages.push({ url });
+        }
+      }
+
+      let techQueries: any[] = [];
+      const rawTechName = dto.technologyNames;
+
+      if (rawTechName) {
+        const techNames: string[] = JSON.parse(rawTechName);
+
+        for (let i = 0; i < techNames.length; i++) {
+          const techName = techNames[i];
+
+          const existingTech = await this.prisma.technology.findUnique({
+            where: { name: techName },
+          });
+
+          let iconUrl = existingTech?.icon || null;
+
+          if (!existingTech && techIconFiles && techIconFiles[i]) {
+            iconUrl = await this.cloudinaryService.uploadFile(
+              techIconFiles[i],
+              'the_projects/tech_icons',
+            );
+            uploadedUrls.push(iconUrl);
+          }
+
+          techQueries.push({
+            where: { name: techName },
+            create: {
+              name: techName,
+              icon: iconUrl,
+            },
+          });
+        }
+      }
+
+      const { isPublished, ...tempData } = dto;
+
+      const { technologyNames, ...pureData } = tempData;
+
+      // 5. Simpan ke database
+      return await this.prisma.project.create({
+        data: {
+          ...pureData,
+          coverImage: coverImageUrl,
+          isPublished: String(isPublished) === 'true',
+          images:
+            uploadedImages.length > 0 ? { create: uploadedImages } : undefined,
+          technologies:
+            techQueries.length > 0
+              ? { connectOrCreate: techQueries }
+              : undefined,
+        },
+        include: {
+          images: true,
+          technologies: true,
+        },
+      });
+    } catch (error) {
+      console.error(
+        'Terjadi error saat create project, memulai otomatis rollback asset...',
+        error,
+      );
+
+      if (uploadedUrls.length > 0) {
+        for (const url of uploadedUrls) {
+          await this.cloudinaryService.deleteFile(url);
+        }
+        console.log(
+          `Berhasil membersihkan ${uploadedUrls.length} file sampah dari Cloudinary.`,
+        );
+      }
+
+      throw error;
     }
-
-    return this.prisma.project.create({
-      data: {
-        ...projectData,
-        images: images ? { create: images } : undefined,
-        technologies: technologies ? { create: technologies } : undefined,
-      },
-      include: {
-        images: true,
-        technologies: true,
-      },
-    });
   }
 
   async findAll(onlyPublished = false) {
@@ -61,35 +153,31 @@ export class ProjectService {
   }
 
   async update(id: string, updateProjectDto: UpdateProjectDto) {
-    const { images, technologies, ...projectData } = updateProjectDto;
-
-    const project = await this.prisma.project.findUnique({ where: { id } });
-    if (!project) {
-      throw new NotFoundException(`Project with ID "${id}" not found`);
-    }
-
-    return this.prisma.$transaction(async (tx) => {
-      if (images) {
-        await tx.image.deleteMany({ where: { projectId: id } });
-      }
-
-      if (technologies) {
-        await tx.technology.deleteMany({ where: { projectId: id } });
-      }
-
-      return tx.project.update({
-        where: { id },
-        data: {
-          ...projectData,
-          images: images ? { create: images } : undefined,
-          technologies: technologies ? { create: technologies } : undefined,
-        },
-        include: {
-          images: true,
-          technologies: true,
-        },
-      });
-    });
+    // const { imagesRaw, technologiesRaw, ...projectData } = updateProjectDto;
+    // const project = await this.prisma.project.findUnique({ where: { id } });
+    // if (!project) {
+    //   throw new NotFoundException(`Project with ID "${id}" not found`);
+    // }
+    // return this.prisma.$transaction(async (tx) => {
+    //   if (imagesRaw) {
+    //     await tx.image.deleteMany({ where: { projectId: id } });
+    //   }
+    //   if (technologiesRaw) {
+    //     await tx.technology.deleteMany({ where: { projectId: id } });
+    //   }
+    // return tx.project.update({
+    //   where: { id },
+    //   data: {
+    //     ...projectData,
+    //     images: images ? { create: images } : undefined,
+    //     technologies: technologies ? { create: technologies } : undefined,
+    //   },
+    //   include: {
+    //     images: true,
+    //     technologies: true,
+    //   },
+    // });
+    // });
   }
 
   async remove(id: string) {
