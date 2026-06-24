@@ -5,6 +5,7 @@ import { UniversalExceptionFilter } from './common/filters/universal-exception.f
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

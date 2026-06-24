@@ -4,6 +4,20 @@ All notable changes to the **THE PROJECTS** project will be documented in this f
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project adheres to Semantic Versioning.
 
+## [0.11.0] - 2026-06-24
+
+### ✨ Added
+- **Axios-Based AuthService API**: Created `dashboard/services/auth-service.ts` exposing `loginService` and `getProfileService` handlers.
+- **React Query AuthContext**: Created `AuthProvider` and `useAuth` hook (`dashboard/context/auth-context.tsx`) leveraging TanStack `useMutation` to handle backend login calls and token session validation.
+
+### ⚙️ Changed
+- **Gated Route & Header Integration**: Refactored the dashboard admin layout to leverage the global auth context, updating session checks and dynamically rendering the logged-in email profiling.
+- **LoginPage Integration**: Integrated the auth context login mutation inside `dashboard/app/login/page.tsx`.
+- **Architectural Rules (Rule 6)**: Added the API Services Separation Rule (Rule 6) to `ANTIGRAVITY.md` to ensure query and request layers are clean.
+- **English Translated Readme**: Translated `dashboard/README.md` to English and replaced local URLs with dummy variables.
+
+---
+
 ## [0.10.0] - 2026-06-24
 
 ### ✨ Added

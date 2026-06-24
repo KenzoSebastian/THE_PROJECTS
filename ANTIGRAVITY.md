@@ -24,6 +24,10 @@ Setiap kali memulai atau menyelesaikan tugas, patuhi aturan berikut:
 ### 5. Pengujian Wajib Setiap Fitur Baru (Mandatory Testing Rule)
 *   **Setiap kali menyelesaikan penulisan atau perubahan fitur (frontend, backend, atau skrip integrasi)**, wajib dilakukan pengujian (testing) secara langsung (misal: production build compilation, typescript checking, linting, api testing menggunakan skrip uji, dll.) untuk memastikan tidak ada bug yang lolos ke tahap commit. Jangan melakukan commit sebelum ada konfirmasi pengujian berhasil.
 
+### 6. Pemisahan Layer API & Query (API Services Separation Rule)
+*   **Semua pemanggilan API menggunakan Axios** wajib diletakkan di dalam folder `services/` (misal: `dashboard/services/auth-service.ts`).
+*   Semua pemanggilan React Query hooks (`useQuery` atau `useMutation`) wajib menggunakan fungsi (`queryFn` atau `mutationFn`) yang diekspor dari berkas di dalam folder `services/`. Dilarang menuliskan logika pemanggilan Axios langsung (*inline*) di dalam komponen atau hooks selain berkas service tersebut.
+
 ---
 
 ## 💻 Panduan & Gaya Penulisan Kode (Coding Guidelines)

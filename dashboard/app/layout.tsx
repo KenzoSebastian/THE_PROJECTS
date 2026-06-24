@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/context/theme-context";
 import { QueryProvider } from "@/components/providers/query-provider";
+import { AuthProvider } from "@/context/auth-context";
 import "./globals.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -30,10 +31,12 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-zinc-50 dark:bg-zinc-950">
         <ThemeProvider>
           <QueryProvider>
-            <TooltipProvider>
-              {children}
-              <Toaster theme="light" richColors closeButton />
-            </TooltipProvider>
+            <AuthProvider>
+              <TooltipProvider>
+                {children}
+                <Toaster theme="light" richColors closeButton />
+              </TooltipProvider>
+            </AuthProvider>
           </QueryProvider>
         </ThemeProvider>
       </body>

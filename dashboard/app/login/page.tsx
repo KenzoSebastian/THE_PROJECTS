@@ -1,30 +1,20 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTheme } from "@/context/theme-context";
+import { useAuth } from "@/context/auth-context";
 import { Sun, Moon, Eye, EyeOff, Loader2, Mail, Lock } from "lucide-react";
-import { toast } from "sonner";
 
 export default function LoginPage() {
-  const router = useRouter();
   const { theme, toggleTheme } = useTheme();
+  const { loginMutation } = useAuth();
   const [email, setEmail] = useState("admin@theprojects.dev");
   const [password, setPassword] = useState("admin");
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
-  // Redirect if already logged in
-  useEffect(() => {
-    const isLoggedIn = localStorage.getItem("the_projects_logged_in");
-    if (isLoggedIn === "true") {
-      router.replace("/");
-    }
-  }, [router]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,32 +25,11 @@ export default function LoginPage() {
       return;
     }
 
-    setLoading(true);
-
-    // Mock network request delay
-    setTimeout(() => {
-      if (email === "admin@theprojects.dev" && password === "admin") {
-        localStorage.setItem("the_projects_logged_in", "true");
-        toast.success("Login Berhasil", {
-          description: "Selamat datang kembali di The Projects Console!",
-        });
-        router.replace("/");
-      } else {
-        setError("Email atau password yang Anda masukkan salah.");
-        setLoading(false);
-      }
-    }, 1200);
+    loginMutation.mutate({ email, password });
   };
 
   const handleMockSSO = (provider: string) => {
-    setLoading(true);
-    setTimeout(() => {
-      localStorage.setItem("the_projects_logged_in", "true");
-      toast.success(`Login via ${provider} Berhasil`, {
-        description: "Autentikasi otomatis berhasil disimulasikan.",
-      });
-      router.replace("/");
-    }, 1000);
+    loginMutation.mutate({ email: "admin@theprojects.dev", password: "admin" });
   };
 
   return (
@@ -155,7 +124,7 @@ export default function LoginPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="pl-10 h-10.5 rounded-xl border-zinc-200 dark:border-zinc-800 focus-visible:ring-orange-600 focus-visible:border-orange-600 text-xs"
-                      disabled={loading}
+                      disabled={loginMutation.isPending}
                     />
                   </div>
                 </div>
@@ -179,13 +148,13 @@ export default function LoginPage() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="pl-10 pr-10 h-10.5 rounded-xl border-zinc-200 dark:border-zinc-800 focus-visible:ring-orange-600 focus-visible:border-orange-600 text-xs"
-                      disabled={loading}
+                      disabled={loginMutation.isPending}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3.5 top-3 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 cursor-pointer"
-                      disabled={loading}
+                      disabled={loginMutation.isPending}
                     >
                       {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                     </button>
@@ -195,10 +164,10 @@ export default function LoginPage() {
                 {/* Submit Button */}
                 <Button
                   type="submit"
-                  disabled={loading}
+                  disabled={loginMutation.isPending}
                   className="w-full h-10.5 rounded-xl bg-orange-600 text-white font-semibold hover:bg-orange-700 hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer text-xs"
                 >
-                  {loading ? (
+                  {loginMutation.isPending ? (
                     <span className="flex items-center justify-center gap-2">
                       <Loader2 className="size-4 animate-spin" />
                       Sign In...
@@ -222,7 +191,7 @@ export default function LoginPage() {
                 <Button
                   variant="outline"
                   onClick={() => handleMockSSO("Google")}
-                  disabled={loading}
+                  disabled={loginMutation.isPending}
                   className="h-10.5 rounded-xl border-zinc-200 dark:border-zinc-800 bg-white hover:bg-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-800 cursor-pointer flex items-center justify-center gap-2 text-xs"
                 >
                   <svg className="size-4" viewBox="0 0 24 24" width="24" height="24">
@@ -250,7 +219,7 @@ export default function LoginPage() {
                 <Button
                   variant="outline"
                   onClick={() => handleMockSSO("GitHub")}
-                  disabled={loading}
+                  disabled={loginMutation.isPending}
                   className="h-10.5 rounded-xl border-zinc-200 dark:border-zinc-800 bg-white hover:bg-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-800 cursor-pointer flex items-center justify-center gap-2 text-xs"
                 >
                   <svg className="size-4 fill-current text-zinc-950 dark:text-zinc-50" viewBox="0 0 24 24">
