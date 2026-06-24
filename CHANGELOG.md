@@ -4,6 +4,14 @@ All notable changes to the **THE PROJECTS** project will be documented in this f
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project adheres to Semantic Versioning.
 
+## [0.10.0] - 2026-06-24
+
+### ✨ Added
+- **TanStack React Query Integration**: Configured global `QueryClient` inside `dashboard/lib/query-client.ts` with query/mutation error loggers, 5-minute stale caching, 10-minute garbage collection, and custom Axios retry filters.
+- **QueryProvider Client Wrapper**: Created a dedicated `QueryProvider` context wrapper in `dashboard/components/providers/query-provider.tsx` and wrapped the root layout.
+
+---
+
 ## [0.9.0] - 2026-06-24
 
 ### ✨ Added

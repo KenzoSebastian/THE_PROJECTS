@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🖥️ Administrative Console Dashboard (Next.js)
 
-## Getting Started
+Halaman ini berisi dokumentasi detail mengenai aplikasi dasbor administratif (**dashboard**) pada ekosistem **THE PROJECTS**. Aplikasi ini dibangun menggunakan Next.js App Router, Tailwind CSS, Axios Client, TanStack Query, dan Shadcn UI.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🏗️ Fitur Utama (Core Features)
+
+Dasbor kontrol portfolio ini mengintegrasikan beberapa fitur canggih yang siap terhubung dengan backend NestJS:
+
+### 1. Sistem Autentikasi & Gating Rute (`/login`)
+*   **Halaman Login Premium**: Desain split-screen responsif dengan panel visual gradien bersinar (glowing radial-gradient) di sisi kiri dan formulir kredensial di sisi kanan.
+*   **Demo Sign-in Kredensial**: Dilengkapi info pre-fill dengan email `admin@theprojects.dev` dan sandi `admin` serta tombol simulasi integrasi SSO Google dan GitHub.
+*   **Client-Side Security Gate**: Rute utama (`/`, `/projects`, `/activity`, `/manage`) terproteksi penuh menggunakan otentikasi berbasis status React di file layout utama, mengalihkan pengguna ke `/login` jika sesi token kosong.
+*   **Interactive Logout**: Menu keluar di header panel admin yang membersihkan data lokal sesi dan memicu notifikasi visual Sonner.
+
+### 2. Manajemen Portofolio Modular (`/projects`)
+Halaman pengelolaan proyek dipecah menjadi 9 subkomponen modular terpisah untuk menjaga batas kode di bawah 300 baris:
+*   `project-grid.tsx` & `project-card.tsx`: Menampilkan katalog proyek dalam tata letak kartu grid dengan spacing optimal (`--card-spacing: 12px`) dan tinggi sampul visual (`h-32`) untuk mencegah konten meluap.
+*   `project-list.tsx`: Visualisasi katalog berbentuk tabel/baris list ringkas.
+*   `project-control-bar.tsx`: Filter pencarian dinamis (draf, rilis, teks pencarian).
+*   `project-form-sheet.tsx`: Panel geser (*sheet*) formulir tambah/edit proyek.
+*   `project-form-techs.tsx` & `project-form-gallery.tsx`: Selektor badge tag teknologi modular dan manajemen URL galeri multi-gambar.
+*   `delete-confirm-dialog.tsx`: Dialog konfirmasi Sonner sebelum penghapusan permanen.
+
+### 3. Jaringan Integrasi & Manajemen Status (API & Caching)
+*   **Axios Client Instance**: Dikonfigurasi di `lib/api.ts` membaca variabel env `NEXT_PUBLIC_API_URL` atau `API_URL` dengan fallback otomatis ke server Vercel `https://the-projects-chi.vercel.app/`.
+*   **JWT Request Interceptor**: Secara otomatis memindai penyimpanan lokal (`the_projects_token`) dan menyematkan header `Authorization: Bearer <token>` pada setiap permintaan jaringan HTTP.
+*   **TanStack Query State**: Diatur di `lib/query-client.ts` menggunakan query/mutation error loggers terpusat, dengan data *staleTime* 5 menit dan *gcTime* 10 menit untuk optimasi transfer data.
+
+### 4. Pusat Kontrol Server & Timeline (`/manage` & `/activity`)
+*   **Diagnostic Tools (`/manage`)**: Panel pengecekan performa pool database relasional, tombol reset penyimpanan cache lokal, status response ping server, serta simulasi pembersihan aset CDN.
+*   **Activity Timeline Feed (`/activity`)**: Jalur log historis melacak aktivitas manipulasi portofolio lengkap dengan statistik ringkasan dan diagram batang CSS penggunaan penyimpanan media.
+
+---
+
+## 📂 Struktur Direktori Dashboard
+
+```plaintext
+dashboard/
+├── app/                  # Next.js App Router
+│   ├── (admin)/          # Grouping rute terproteksi login (Overview, Projects, Activity, Manage)
+│   │   ├── activity/     # Rute halaman log aktivitas
+│   │   ├── manage/       # Rute diagnostik maintenance
+│   │   ├── projects/     # Rute pengelolaan portfolio CRUD
+│   │   └── layout.tsx    # Gated admin navigation layout (Sidebar & Header & Logout)
+│   ├── data/             # Struktur antarmuka tipe data TypeScript & projects dummy data
+│   ├── login/            # Rute login panel administratif
+│   ├── globals.css       # Mapped Tailwind v4 layer & unified color transitions
+│   └── layout.tsx        # Root HTML shell wrapping Providers
+├── components/           # React Components
+│   ├── providers/        # Context Providers (QueryProvider)
+│   ├── projects/         # Subkomponen modular CRUD project panel
+│   └── ui/               # Shadcn UI primitives (Button, Card, Input, Separator, etc.)
+├── context/              # Theme Context Provider (Light/Dark mode)
+└── lib/                  # Axios api instance client & query-client setup
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Panduan Menjalankan Secara Lokal
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1. Konfigurasi Environment (`.env.local`)
+Buat berkas `.env.local` di dalam folder `dashboard/` untuk mengarahkan API endpoint:
 
-## Learn More
+```env
+# Alamat Server Backend API (Local maupun Cloud Production)
+NEXT_PUBLIC_API_URL="https://the-projects-chi.vercel.app/"
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 2. Perintah Pengembangan
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Luncurkan perintah berikut di dalam direktori `dashboard/`:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+# Pasang dependensi paket
+npm install
 
-## Deploy on Vercel
+# Jalankan server lokal (Development mode)
+npm run dev
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Jalankan kompilasi optimasi produksi
+npm run build
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Akses dasbor melalui peramban di alamat `http://localhost:3000`.
