@@ -56,7 +56,7 @@ export default function LoginPage() {
             <div className="absolute bottom-[20%] right-[-10%] size-96 rounded-full bg-amber-500/10 blur-3xl" />
             <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_100%_200px,rgba(251,146,60,0.08),transparent)]" />
             {/* Grid Pattern Overlay */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-size-[4rem_4rem]" />
           </div>
 
           <div className="relative z-10 flex items-center gap-2">
@@ -71,7 +71,8 @@ export default function LoginPage() {
               Craft beautiful workspaces.
             </h1>
             <p className="text-sm text-zinc-400 leading-relaxed">
-              Selamat datang di portal kontrol manajemen portofolio Anda. Kelola proyek, rilis pembaruan, dan pantau status server dalam satu dasbor minimalis yang terintegrasi.
+              Selamat datang di portal kontrol manajemen portofolio Anda. Kelola proyek, rilis pembaruan, dan
+              pantau status server dalam satu dasbor minimalis yang terintegrasi.
             </p>
           </div>
 
@@ -112,7 +113,10 @@ export default function LoginPage() {
 
                 {/* Input Email */}
                 <div className="space-y-1">
-                  <label htmlFor="email" className="text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+                  <label
+                    htmlFor="email"
+                    className="text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider"
+                  >
                     Email Address
                   </label>
                   <div className="relative">
@@ -132,7 +136,10 @@ export default function LoginPage() {
                 {/* Input Password */}
                 <div className="space-y-1">
                   <div className="flex items-center justify-between">
-                    <label htmlFor="password" className="text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+                    <label
+                      htmlFor="password"
+                      className="text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider"
+                    >
                       Password
                     </label>
                     <span className="text-[11px] font-semibold text-orange-600 hover:underline cursor-pointer">
@@ -181,7 +188,9 @@ export default function LoginPage() {
               {/* Separator */}
               <div className="relative flex py-1 items-center">
                 <div className="flex-grow border-t border-zinc-200 dark:border-zinc-800"></div>
-                <span className="flex-shrink mx-4 text-[10px] text-zinc-400 uppercase tracking-widest font-semibold">Or continue with</span>
+                <span className="flex-shrink mx-4 text-[10px] text-zinc-400 uppercase tracking-widest font-semibold">
+                  Or continue with
+                </span>
                 <div className="flex-grow border-t border-zinc-200 dark:border-zinc-800"></div>
               </div>
 
@@ -231,7 +240,16 @@ export default function LoginPage() {
 
               {/* Credentials Hint Banner */}
               <div className="p-3 text-[10px] bg-zinc-50 border border-zinc-150 rounded-2xl text-zinc-500 dark:bg-zinc-950 dark:border-zinc-800/60 dark:text-zinc-400">
-                <span className="font-semibold text-zinc-800 dark:text-zinc-200">Tip Demo:</span> Gunakan email <code className="font-mono text-orange-600 bg-orange-50 dark:bg-orange-950/40 px-1 py-0.5 rounded">admin@theprojects.dev</code> dan password <code className="font-mono text-orange-600 bg-orange-50 dark:bg-orange-950/40 px-1 py-0.5 rounded">admin</code> untuk masuk.
+                <span className="font-semibold text-zinc-800 dark:text-zinc-200">Tip Demo:</span> Gunakan
+                email{" "}
+                <code className="font-mono text-orange-600 bg-orange-50 dark:bg-orange-950/40 px-1 py-0.5 rounded">
+                  admin@theprojects.dev
+                </code>{" "}
+                dan password{" "}
+                <code className="font-mono text-orange-600 bg-orange-50 dark:bg-orange-950/40 px-1 py-0.5 rounded">
+                  admin
+                </code>{" "}
+                untuk masuk.
               </div>
             </CardContent>
           </Card>
