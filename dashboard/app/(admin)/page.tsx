@@ -19,7 +19,13 @@ export default function AdminDashboardPage() {
     let list: Project[] = initialProjects;
     if (stored) {
       try {
-        list = JSON.parse(stored);
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length === 2 && parsed.some(p => p.id === "project-1") && parsed.some(p => p.id === "project-2")) {
+          list = initialProjects;
+          localStorage.setItem("the_projects_dummy_projects", JSON.stringify(initialProjects));
+        } else {
+          list = parsed;
+        }
       } catch (e) {
         list = initialProjects;
       }

@@ -18,6 +18,9 @@ Setiap kali memulai atau menyelesaikan tugas, patuhi aturan berikut:
 ### 3. Pembaruan Aturan Secara Berkelanjutan (Rule Synchronization)
 *   Setiap kali pengguna (USER) memberikan instruksi tentang aturan baru, gaya penulisan kode, atau batasan arsitektur baru, aturan tersebut **wajib didokumentasikan ke dalam file `ANTIGRAVITY.md` ini**.
 
+### 4. Batasan Jumlah Baris Berkas (Max 300 Lines Rule)
+*   **Setiap file kode tidak boleh melebihi 300 baris.** Hal ini bertujuan agar kode tetap modular, bersih, dan mudah dirawat (*maintainable*). Jika sebuah modul atau file bertambah besar, lakukan refactoring dan pisahkan ke dalam subkomponen atau file terpisah.
+
 ---
 
 ## 💻 Panduan & Gaya Penulisan Kode (Coding Guidelines)

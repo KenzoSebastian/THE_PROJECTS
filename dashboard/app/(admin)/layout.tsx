@@ -1,7 +1,14 @@
+"use client";
+
 import { AppSidebar } from "@/components/app-sidebar";
 import { Search } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 export default function AdminDashboardLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
   return (
     // Background dasar abu-abu terang minimalis ala mockup premium
     <div className="flex h-screen w-screen p-5 overflow-hidden bg-[#f4f4f5] text-zinc-950 font-sans antialiased dark:bg-zinc-950 dark:text-zinc-50">
@@ -19,15 +26,39 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
           </div>
 
           <div className="hidden md:flex items-center gap-1 text-xs font-medium text-zinc-600 dark:text-zinc-400">
-            <span className="px-4 py-1.5 rounded-full bg-zinc-950 text-white font-semibold dark:bg-white dark:text-zinc-950">
+            <Link
+              href="/"
+              className={cn(
+                "px-4 py-1.5 rounded-full transition-colors",
+                pathname === "/"
+                  ? "bg-zinc-950 text-white font-semibold dark:bg-white dark:text-zinc-950"
+                  : "hover:text-zinc-950 dark:hover:text-zinc-50"
+              )}
+            >
               Overview
-            </span>
-            <span className="px-4 py-1.5 rounded-full hover:text-zinc-950 dark:hover:text-zinc-50 cursor-pointer transition-colors">
+            </Link>
+            <Link
+              href="/activity"
+              className={cn(
+                "px-4 py-1.5 rounded-full transition-colors",
+                pathname === "/activity"
+                  ? "bg-zinc-950 text-white font-semibold dark:bg-white dark:text-zinc-950"
+                  : "hover:text-zinc-950 dark:hover:text-zinc-50"
+              )}
+            >
               Activity
-            </span>
-            <span className="px-4 py-1.5 rounded-full hover:text-zinc-950 dark:hover:text-zinc-50 cursor-pointer transition-colors">
+            </Link>
+            <Link
+              href="/manage"
+              className={cn(
+                "px-4 py-1.5 rounded-full transition-colors",
+                pathname === "/manage"
+                  ? "bg-zinc-950 text-white font-semibold dark:bg-white dark:text-zinc-950"
+                  : "hover:text-zinc-950 dark:hover:text-zinc-50"
+              )}
+            >
               Manage
-            </span>
+            </Link>
           </div>
 
           <div className="flex items-center gap-4">
@@ -50,7 +81,7 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
         </header>
 
         <main className="w-full pt-8 pb-12">
-          <div className="max-w-5xl mx-auto w-full">{children}</div>
+          <div className="w-full px-6">{children}</div>
         </main>
       </div>
     </div>

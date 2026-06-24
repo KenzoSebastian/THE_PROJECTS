@@ -4,6 +4,23 @@ All notable changes to the **THE PROJECTS** project will be documented in this f
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project adheres to Semantic Versioning.
 
+## [0.6.0] - 2026-06-24
+
+### ✨ Added
+- **Global Theme Context System**: Implemented a custom React Context provider (`ThemeProvider`) and hook (`useTheme`) for managing light/dark themes with `localStorage` persistence, synced via `.dark` class.
+- **Unified Color Transitions**: Configured a global transition CSS class (`transition-colors duration-300 ease-in-out`) on all elements (`*`) in `globals.css` so that all components transition colors synchronously in 300ms when the theme changes.
+- **Activity Log Route (`/activity`)**: Built a creative dashboard feed showing a timeline of recent mock changes, mocked daily traffic data visualized using CSS grids, and storage usage metrics.
+- **Maintenance & Control Route (`/manage`)**: Created a database control center containing connection diagnostics (pool status, response pings), schema metadata, a local cache reset button, and simulation controls for Cloudinary CDN cleanups.
+
+### ⚙️ Changed
+- **Full Shadcn Button & Input Integration**: Migrated all raw textfields and buttons to Shadcn UI components. Configured the root `Toaster` component with `theme="light"` to force light-mode notifications.
+- **Enhanced Button Spacing & Padding**: Added vertical padding to all buttons (`py-2`, etc.) to prevent them from looking too flat or squished.
+- **Form Sidebar Action Buttons Layout**: Rearranged the bottom action buttons (Submit and Cancel) in the Create and Update form sidebar sheets to align horizontally in a row (`flex-row`) instead of a vertical column.
+- **Light Mode Sidebar Toggle Color Fix**: Corrected the active text color and hover state of the "Light" mode button in the sidebar, resolving the bug where active text hover color turned black on a black background.
+- **Modular Codebase Refactoring**: Decomposed the monolithic projects page into 9 distinct subcomponents under `dashboard/components/projects/` to strictly adhere to the project standard of keeping each file under 300 lines of code.
+
+---
+
 ## [0.5.0] - 2026-06-24
 
 ### ✨ Added
