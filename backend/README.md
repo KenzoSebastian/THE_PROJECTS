@@ -64,7 +64,14 @@ erDiagram
 | `GET`  | `/`       | Public | Application root welcome status check         |
 | `GET`  | `/health` | Public | System health checks for service availability |
 
-### 2. User Management (`/user`)
+### 2. Authentication Gateway (`/auth`)
+
+| Method | Endpoint        | Access    | Description                                                 |
+| :----- | :-------------- | :-------- | :---------------------------------------------------------- |
+| `POST` | `/auth/login`   | Public    | Authenticate credentials and receive a JWT access token      |
+| `GET`  | `/auth/profile` | Protected | Retrieve user session payload decoded from the active token |
+
+### 3. User Management (`/user`)
 
 | Method   | Endpoint    | Access | Description                                                    |
 | :------- | :---------- | :----- | :------------------------------------------------------------- |
@@ -74,15 +81,34 @@ erDiagram
 | `PATCH`  | `/user/:id` | Public | Modify specific user profile parameters securely               |
 | `DELETE` | `/user/:id` | Public | Terminate and erase a user account record permanently          |
 
-### 3. Portfolio Project Management (`/project`)
+### 4. Portfolio Project Management (`/project`)
 
-| Method   | Endpoint       | Access | Description                                                               |
-| :------- | :------------- | :----- | :------------------------------------------------------------------------ |
-| `POST`   | `/project`     | Public | Create a new portfolio project mapping with multi-file binary uploads     |
-| `GET`    | `/project`     | Public | Retrieve all recorded portfolio projects along with relational nodes      |
-| `GET`    | `/project/:id` | Public | Fetch comprehensive details of a specific project by identity key         |
-| `PATCH`  | `/project/:id` | Public | Execute strict relational sync update (Stay, Add, or Delete media assets) |
-| `DELETE` | `/project/:id` | Public | Permanently remove a project card and cascade erase associated images     |
+| Method   | Endpoint       | Access    | Description                                                               |
+| :------- | :------------- | :-------- | :------------------------------------------------------------------------ |
+| `POST`   | `/project`     | Protected | Create a new portfolio project mapping with multi-file binary uploads     |
+| `GET`    | `/project`     | Public    | Retrieve all recorded portfolio projects along with relational nodes      |
+| `GET`    | `/project/:id` | Public    | Fetch comprehensive details of a specific project by identity key         |
+| `PATCH`  | `/project/:id` | Protected | Execute strict relational sync update (Stay, Add, or Delete media assets) |
+| `DELETE` | `/project/:id` | Protected | Permanently remove a project card and cascade erase associated images     |
+
+---
+
+## 🔒 Authentication Integration Guide
+
+To interact with Protected endpoints, you must include the JWT token in your HTTP headers:
+
+1. **Obtain Token**: Send a `POST` request to `/auth/login` with your credentials:
+   ```json
+   {
+     "email": "admin@theprojects.dev",
+     "password": "admin"
+   }
+   ```
+   On success, you will receive an `access_token`.
+2. **Authorize Request**: Add the token as a Bearer token in the `Authorization` header:
+   ```http
+   Authorization: Bearer <your_access_token_here>
+   ```
 
 ---
 
@@ -127,4 +153,7 @@ DATABASE_URL="postgresql://username:password@localhost:5432/database_name?sslmod
 CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
 CLOUDINARY_API_KEY=your_cloudinary_api_key
 CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+
+# JWT Authentication Config node
+JWT_SECRET=super-secret-key-123
 ```

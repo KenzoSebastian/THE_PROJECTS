@@ -4,6 +4,20 @@ All notable changes to the **THE PROJECTS** project will be documented in this f
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project adheres to Semantic Versioning.
 
+## [0.8.0] - 2026-06-24
+
+### ✨ Added
+- **NestJS JWT Authentication Service**: Created `/auth/login` for credentials authentication and JWT generation, alongside a protected `/auth/profile` endpoint.
+- **Backend Auth Guard Security Gate**: Protected all critical write operations on portfolio projects (`POST /project`, `PATCH /project/:id`, `DELETE /project/:id`) using NestJS `@UseGuards(AuthGuard)`.
+- **Bcrypt Password Protection**: Integrated 10-salt bcrypt hashing for user passwords during registration and updates.
+- **Demo Database Seeding**: Developed `src/seed.ts` to automatically populate PostgreSQL with the default admin user credentials (`admin@theprojects.dev` / `admin`).
+
+### ⚙️ Changed
+- **Prisma Parameter Mapping Fix**: Refactored UserController route handlers to parse UUID strings directly instead of parsing them as numeric types.
+- **Technical Specifications Documentation**: Updated backend `README.md` with instructions on JWT integration headers and new REST mapping tables.
+
+---
+
 ## [0.7.0] - 2026-06-24
 
 ### ✨ Added
