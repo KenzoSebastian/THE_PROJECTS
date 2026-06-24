@@ -4,6 +4,15 @@ All notable changes to the **THE PROJECTS** project will be documented in this f
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project adheres to Semantic Versioning.
 
+## [0.5.0] - 2026-06-24
+
+### ✨ Added
+- **Interactive Project CRUD UI**: Built a high-fidelity client-side CRUD dashboard for managing portfolio projects (`/projects`) using local component state with fallback to local storage persistence.
+- **Relational Dummy Data Module**: Created a structured mock data file at `dashboard/app/data/projects.ts` that strictly reflects the NestJS backend PostgreSQL database models (`Project`, `Image`, `Technology`).
+- **Dynamic Project Config Forms**: Developed forms inside slide-out sheets for creation and modification, supporting title-based slug generation, cover image previews, external links, rich markdown descriptions, multi-image gallery urls, and interactive quick-tag technology selections.
+- **Dynamic Overview Landing Metrics**: Updated the Dashboard Landing Page (`/`) with dynamic overview metrics (Total Projects, Published, and Drafts) synchronized with the local storage dataset.
+- **User Alerts & Confirmations**: Integrated Sonner toast notifications for operations feedback and Dialog confirmation popups for project deletions.
+
 ---
 
 ## [0.4.0] - 2026-06-23
