@@ -24,7 +24,7 @@ Halaman pengelolaan proyek dipecah menjadi 9 subkomponen modular terpisah untuk 
 *   `delete-confirm-dialog.tsx`: Dialog konfirmasi Sonner sebelum penghapusan permanen.
 
 ### 3. Jaringan Integrasi & Manajemen Status (API & Caching)
-*   **Axios Client Instance**: Dikonfigurasi di `lib/api.ts` membaca variabel env `NEXT_PUBLIC_API_URL` atau `API_URL` dengan fallback otomatis ke server Vercel `https://the-projects-chi.vercel.app/`.
+*   **Axios Client Instance**: Dikonfigurasi di `lib/api.ts` membaca variabel env `NEXT_PUBLIC_API_URL` or `API_URL` dengan fallback otomatis ke server Vercel `https://the-projects-chi.vercel.app/`.
 *   **JWT Request Interceptor**: Secara otomatis memindai penyimpanan lokal (`the_projects_token`) dan menyematkan header `Authorization: Bearer <token>` pada setiap permintaan jaringan HTTP.
 *   **TanStack Query State**: Diatur di `lib/query-client.ts` menggunakan query/mutation error loggers terpusat, dengan data *staleTime* 5 menit dan *gcTime* 10 menit untuk optimasi transfer data.
 
@@ -83,4 +83,4 @@ npm run dev
 npm run build
 ```
 
-Akses dasbor melalui peramban di alamat `http://localhost:3000`.
+Akses dasbor melalui peramban di alamat `http://http://localhost:3000`.
