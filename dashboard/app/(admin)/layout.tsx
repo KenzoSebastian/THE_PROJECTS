@@ -1,13 +1,46 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
 import { AppSidebar } from "@/components/app-sidebar";
-import { Search } from "lucide-react";
+import { Search, LogOut } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export default function AdminDashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const [authorized, setAuthorized] = useState(false);
+
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem("the_projects_logged_in");
+    if (isLoggedIn !== "true") {
+      router.replace("/login");
+    } else {
+      setAuthorized(true);
+    }
+  }, [router]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("the_projects_logged_in");
+    toast.success("Logout Berhasil", {
+      description: "Anda telah keluar dari sesi administrator.",
+    });
+    router.replace("/login");
+  };
+
+  if (!authorized) {
+    return (
+      <div className="flex h-screen w-screen items-center justify-center bg-zinc-50 dark:bg-zinc-950">
+        <div className="flex flex-col items-center gap-3">
+          <div className="size-8 animate-spin rounded-full border-4 border-orange-600 border-t-transparent" />
+          <p className="text-xs text-zinc-500 font-medium dark:text-zinc-400">Memeriksa otorisasi...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     // Background dasar abu-abu terang minimalis ala mockup premium
@@ -71,11 +104,20 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
               <div className="flex items-center gap-1.5 text-xs font-semibold">
                 <span className="text-zinc-900 dark:text-zinc-50">Kenzo Sebastian</span>
                 <span className="text-zinc-400 dark:text-zinc-600 font-normal">/</span>
-                <span className="text-zinc-500 dark:text-zinc-400 font-normal">Admin Dashboard</span>
+                <span className="text-zinc-500 dark:text-zinc-400 font-normal">Admin</span>
               </div>
               <div className="flex size-6 items-center justify-center rounded-full bg-linear-to-tr from-orange-500 to-amber-500 text-white font-bold text-[10px] shadow-xs">
                 K
               </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleLogout}
+                className="size-7 rounded-full text-zinc-400 hover:text-red-500 hover:bg-red-50/20 dark:hover:bg-red-950/20 cursor-pointer transition-colors"
+                title="Keluar"
+              >
+                <LogOut className="size-3.5" />
+              </Button>
             </div>
           </div>
         </header>

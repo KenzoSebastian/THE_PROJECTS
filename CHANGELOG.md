@@ -4,6 +4,15 @@ All notable changes to the **THE PROJECTS** project will be documented in this f
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project adheres to Semantic Versioning.
 
+## [0.7.0] - 2026-06-24
+
+### ✨ Added
+- **Login Page (`/login`)**: Built a premium, split-screen authentication console featuring credentials login, inline dark/light theme toggle, custom mock SSO buttons for Google and GitHub, validation feedback, and automated pre-filled credentials.
+- **Client-Side Authentication Gate**: Secured all dashboard views inside the admin layout group (`/`, `/projects`, `/activity`, `/manage`) by checking auth state and redirecting unauthenticated users to `/login`.
+- **Interactive Logout Pipeline**: Placed a clean logout button in the header profile section to remove authentication states with accompanying Sonner toasts and dynamic route resets.
+
+---
+
 ## [0.6.0] - 2026-06-24
 
 ### ✨ Added
