@@ -4,6 +4,14 @@ All notable changes to the **THE PROJECTS** project will be documented in this f
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project adheres to Semantic Versioning.
 
+## [0.9.0] - 2026-06-24
+
+### ✨ Added
+- **Axios API Client Instance**: Initialized a global Axios instance at `dashboard/lib/api.ts` mapped to `NEXT_PUBLIC_API_URL` / `API_URL` environment variables, defaulting to Vercel host `https://the-projects-chi.vercel.app/`.
+- **JWT Authorization Interceptor**: Configured an automatic request interceptor that extracts the client-side bearer token (`the_projects_token`) and binds it as an authorization header on outgoing client requests.
+
+---
+
 ## [0.8.0] - 2026-06-24
 
 ### ✨ Added
